@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">找新窝</string>
+    <string name="app_description">基于豆瓣租房小组数据的搜房App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_search">搜索</string>
+    <string name="edit_search_hint">请输入北京地点，如 中关村</string>
+    <string name="text_favorate"><u>收藏</u></string>
+    <string name="text_settings"><u>设置</u></string>
+</resources>
