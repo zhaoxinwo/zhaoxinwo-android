@@ -1,5 +1,7 @@
 package com.zhaoxinwo.zhaoxinwo2;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
@@ -15,12 +17,20 @@ public class ResultActivity extends Activity {
 		setContentView(R.layout.activity_result);
 
 		// Get keywords from HomeActivity
-		String keywords = getIntent().getStringExtra("keywords");
+		final String keywords = getIntent().getStringExtra("keywords");
 
 		// Set title
-		keywords = "搜索: " + keywords;
-		((TextView) findViewById(R.id.text_title)).setText(keywords);
+		((TextView) findViewById(R.id.text_title)).setText("搜索: " + keywords);
 		Toast.makeText(getApplicationContext(), keywords, Toast.LENGTH_SHORT)
 				.show();
+
+		// Get result
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ZApi api = new ZApi();
+				ArrayList<House> houses = api.search(keywords, 1);
+			}
+		}).start();
 	}
 }

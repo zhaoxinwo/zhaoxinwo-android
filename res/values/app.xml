@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="app">#04599A</color>
+    <color name="app">#04589A</color>
     <color name="button_text">#FFFFFF</color>
-    <color name="button_text_bgd">#04599A</color>
-    <color name="text_text">#04599A</color>
+    <color name="button_text_bgd">#04589A</color>
+    <color name="text_text">#04589A</color>
 
 </resources>

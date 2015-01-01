@@ -41,9 +41,15 @@ public class HomeActivity extends Activity {
 
 	public void onButtonSearchClick(View v) {
 		String keywords = ((TextView) findViewById(R.id.textKeywords))
-				.getText().toString();
+				.getText().toString().trim();
 		Intent intent = new Intent(HomeActivity.this, ResultActivity.class);
-		intent.putExtra("keywords", keywords);
-		startActivity(intent);
+
+		if (!keywords.isEmpty()) {
+			intent.putExtra("keywords", keywords);
+			startActivity(intent);
+		} else {
+			Toast.makeText(getApplicationContext(), "请先输入地点名称",
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 }
