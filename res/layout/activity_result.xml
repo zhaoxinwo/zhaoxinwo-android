@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="80dp"
+    android:background="@color/WhiteSmoke"
     android:orientation="vertical"
+    android:paddingBottom="80dp"
     tools:context=".ResultActivity" >
 
     <FrameLayout
@@ -21,9 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="12dp"
-            android:textSize="18dp"
             android:text="Search: ZhongGuanCun"
-            android:textColor="@color/White" />
+            android:textColor="@color/White"
+            android:textSize="18dp" />
     </FrameLayout>
 
     <LinearLayout
@@ -35,9 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:padding="12dp"
             android:background="@color/White"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="12dp" >
 
             <TextView
                 android:layout_width="match_parent"
@@ -48,31 +49,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ditie" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="dizhi" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="touxiang" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="jushi" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="dianhua" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="neirong" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="images" />
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
