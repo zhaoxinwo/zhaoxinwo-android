@@ -1,12 +1,13 @@
-package com.zhaoxinwo.zhaoxinwo2;
-
-import java.util.ArrayList;
+package com.zhaoxinwo.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.zhaoxinwo.api.ZApi;
+import com.zhaoxinwo.model.Result;
 
 public class ResultActivity extends Activity {
 	@Override
@@ -29,7 +30,10 @@ public class ResultActivity extends Activity {
 			@Override
 			public void run() {
 				ZApi api = new ZApi();
-				ArrayList<House> houses = api.search(keywords, 1);
+				Result result = api.search(keywords, 1);
+				((TextView) findViewById(R.id.text_title)).setText("搜索: "
+						+ keywords);
+				System.out.println(result);
 			}
 		}).start();
 	}

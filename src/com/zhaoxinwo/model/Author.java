@@ -1,4 +1,4 @@
-package com.zhaoxinwo.zhaoxinwo2;
+package com.zhaoxinwo.model;
 
 public class Author {
 	public String id = null;

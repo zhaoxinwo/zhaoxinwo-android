@@ -1,4 +1,4 @@
-package com.zhaoxinwo.zhaoxinwo2;
+package com.zhaoxinwo.ui;
 
 import android.app.Activity;
 import android.content.Intent;
