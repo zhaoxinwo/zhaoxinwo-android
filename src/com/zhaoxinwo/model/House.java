@@ -1,13 +1,13 @@
 package com.zhaoxinwo.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class House {
 	public String pub_time;
-	public List<String> links;
+	public List<Object> links = new ArrayList<Object>();
 	public String title;
-	public List<String> ditie;
+	public List<Object> ditie = new ArrayList<Object>();
 	public String text;
 	public Author author;
 	public String hashurl;
@@ -17,8 +17,8 @@ public class House {
 	public String shouji;
 	public int crawl_time;
 	public String jushi;
-	public List<String> dizhi;
-	public List<String> images;
-	public List<List<String>> sim;
+	public List<String> dizhi = new ArrayList<String>();
+	public List<Object> images = new ArrayList<Object>();
+	public List<Object> sim = new ArrayList<Object>();
 	public String source;
 }

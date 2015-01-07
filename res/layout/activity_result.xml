@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/WhiteSmoke"
     android:orientation="vertical"
-    android:paddingBottom="80dp"
     tools:context=".ResultActivity" >
 
     <FrameLayout
@@ -22,9 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="12dp"
-            android:text="Search: ZhongGuanCun"
+            android:text=""
             android:textColor="@color/White"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
     </FrameLayout>
 
     <LinearLayout
@@ -32,76 +31,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <ListView
+            android:id="@+id/listview_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@color/White"
-            android:orientation="vertical"
-            android:padding="12dp" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ditie" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="dizhi" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="touxiang" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="jushi" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="dianhua" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="neirong" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="images" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="sim" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/White" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="xxxxxxxxxxxx" />
-        </LinearLayout>
+            android:background="@color/WhiteSmoke"
+            android:dividerHeight="16dp"
+            android:divider="@color/WhiteSmoke"
+            android:orientation="vertical" >
+        </ListView>
     </LinearLayout>
 
-</LinearLayout><!--
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" 
--->
+</LinearLayout>
