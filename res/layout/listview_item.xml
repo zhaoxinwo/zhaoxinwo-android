@@ -4,12 +4,14 @@
     android:layout_height="wrap_content"
     android:background="@color/White"
     android:orientation="vertical"
-    android:padding="12dp" >
+    android:paddingTop="12dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp" >
 
         <ImageView
             android:id="@+id/avatar"
@@ -36,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Title"
-                android:textColor="@color/Black"
+                android:textColor="@color/Gray"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -45,12 +47,24 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp"
+        android:padding="12dp"
         android:text="Title"
         android:textColor="@color/Black"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="text"
+        android:background="@color/Snow"
+        android:textColor="@color/Gray"
+        android:ellipsize="end"
+        android:singleLine="false"
+        android:maxLines="5"
+        android:textSize="16sp" />
+<!-- 
     <TextView
         android:id="@+id/ditie"
         android:layout_width="match_parent"
@@ -80,14 +94,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="shouji"
-        android:textColor="@color/Black"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="text"
         android:textColor="@color/Black"
         android:textSize="16sp" />
 
@@ -122,5 +128,5 @@
         android:text="url"
         android:textColor="@color/Black"
         android:textSize="16sp" />
-
+-->
 </LinearLayout>

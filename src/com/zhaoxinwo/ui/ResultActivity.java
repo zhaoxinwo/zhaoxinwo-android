@@ -57,26 +57,24 @@ public class ResultActivity extends Activity {
 					map.put("name", result.result.get(i).author.name);
 					map.put("pub_time", result.result.get(i).pub_time);
 					map.put("avatar", avatars.get(i));
-					map.put("jushi", result.result.get(i).jushi);
-					map.put("dizhi", result.result.get(i).dizhi);
-					map.put("ditie", result.result.get(i).ditie);
-					map.put("zujin", result.result.get(i).zujin);
-					map.put("shouji", result.result.get(i).shouji);
-					map.put("images", result.result.get(i).images);
-					map.put("url", result.result.get(i).url);
 					map.put("text", result.result.get(i).text);
-					map.put("sim", result.result.get(i).sim);
+					/*
+					 * map.put("jushi", result.result.get(i).jushi);
+					 * map.put("dizhi", result.result.get(i).dizhi);
+					 * map.put("ditie", result.result.get(i).ditie);
+					 * map.put("zujin", result.result.get(i).zujin);
+					 * map.put("shouji", result.result.get(i).shouji);
+					 * map.put("images", result.result.get(i).images);
+					 * map.put("url", result.result.get(i).url); map.put("sim",
+					 * result.result.get(i).sim);
+					 */
 					listItem.add(map);
 				}
 				SimpleAdapter listItemAdapter = new SimpleAdapter(
 						ResultActivity.this, listItem, R.layout.listview_item,
 						new String[] { "title", "name", "pub_time", "avatar",
-								"jushi", "dizhi", "ditie", "zujin", "shouji",
-								"images", "url", "text", "sim" }, new int[] {
-								R.id.title, R.id.name, R.id.pub_time,
-								R.id.avatar, R.id.jushi, R.id.dizhi,
-								R.id.ditie, R.id.zujin, R.id.shouji,
-								R.id.images, R.id.url, R.id.text, R.id.sim });
+								"text" }, new int[] { R.id.title, R.id.name,
+								R.id.pub_time, R.id.avatar, R.id.text });
 
 				((ListView) findViewById(R.id.listview_result))
 						.setAdapter(listItemAdapter);

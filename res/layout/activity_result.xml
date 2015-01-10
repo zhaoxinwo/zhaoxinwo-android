@@ -36,7 +36,6 @@
             android:id="@+id/listview_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/WhiteSmoke"
             android:divider="@color/WhiteSmoke"
             android:dividerHeight="16dp"
             android:orientation="vertical" >
