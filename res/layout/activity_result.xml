@@ -11,6 +11,7 @@
         android:layout_height="48dp" >
 
         <ImageView
+            android:id="@+id/avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/app" />
@@ -36,8 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/WhiteSmoke"
-            android:dividerHeight="16dp"
             android:divider="@color/WhiteSmoke"
+            android:dividerHeight="16dp"
             android:orientation="vertical" >
         </ListView>
     </LinearLayout>
