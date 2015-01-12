@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,6 +28,7 @@ import com.zhaoxinwo.model.House;
 import com.zhaoxinwo.model.Result;
 
 public class ResultActivity extends Activity {
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,9 +49,9 @@ public class ResultActivity extends Activity {
 			public void handleMessage(Message message) {
 				super.handleMessage(message);
 
+				ListView listview = (ListView) findViewById(R.id.listview_result);
 				ArrayList<Object> list = (ArrayList<Object>) message.obj;
-
-				Result result = (Result) list.get(0);
+				final Result result = (Result) list.get(0);
 				ArrayList<Bitmap> avatars = (ArrayList<Bitmap>) list.get(1);
 				ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 
@@ -63,13 +68,7 @@ public class ResultActivity extends Activity {
 					map.put("jushi", result.result.get(i).jushi);
 					map.put("zujin", result.result.get(i).zujin);
 					map.put("shouji", result.result.get(i).shouji);
-					/*
-					 * map.put("dizhi", result.result.get(i).dizhi);
-					 * map.put("shouji", result.result.get(i).shouji);
-					 * map.put("images", result.result.get(i).images);
-					 * map.put("url", result.result.get(i).url); map.put("sim",
-					 * result.result.get(i).sim);
-					 */
+					map.put("url", result.result.get(i).url);
 					listItem.add(map);
 				}
 				SimpleAdapter listItemAdapter = new SimpleAdapter(
@@ -79,11 +78,52 @@ public class ResultActivity extends Activity {
 								"zujin", "shouji" }, new int[] { R.id.sim,
 								R.id.title, R.id.name, R.id.pub_time,
 								R.id.avatar, R.id.text, R.id.ditie, R.id.dizhi,
-								R.id.jushi, R.id.zujin, R.id.shouji });
+								R.id.jushi, R.id.zujin, R.id.shouji }) {
 
-				((ListView) findViewById(R.id.listview_result))
-						.setAdapter(listItemAdapter);
+					@Override
+					public View getView(int position, View convertView,
+							ViewGroup parent) {
+						View view = super
+								.getView(position, convertView, parent);
+						final TextView html = (TextView) view
+								.findViewById(com.zhaoxinwo.ui.R.id.html);
+						final TextView image = (TextView) view
+								.findViewById(com.zhaoxinwo.ui.R.id.image);
+						final TextView favorate = (TextView) view
+								.findViewById(com.zhaoxinwo.ui.R.id.favorate);
+
+						final int index = position;
+						OnClickListener listener = new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								if (v == html) {
+									Intent browserIntent = new Intent(
+											Intent.ACTION_VIEW,
+											Uri.parse(result.result.get(index).url));
+									startActivity(browserIntent);
+								}
+								if (v == image) {
+									Toast.makeText(getApplicationContext(),
+											"image", Toast.LENGTH_SHORT).show();
+								}
+								if (v == favorate) {
+									Toast.makeText(getApplicationContext(),
+											"favorate", Toast.LENGTH_SHORT)
+											.show();
+								}
+
+							}
+						};
+						html.setOnClickListener(listener);
+						image.setOnClickListener(listener);
+						favorate.setOnClickListener(listener);
+						return view;
+					}
+
+				};
+
 				listItemAdapter.setViewBinder(new ViewBinder() {
+					@Override
 					public boolean setViewValue(View view, Object data,
 							String textRepresentation) {
 						// Filter empty list and string
@@ -137,7 +177,9 @@ public class ResultActivity extends Activity {
 
 						return false;
 					}
+
 				});
+				listview.setAdapter(listItemAdapter);
 			}
 		};
 
