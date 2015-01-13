@@ -18,7 +18,7 @@ public class House {
 	public int crawl_time;
 	public String jushi;
 	public List<String> dizhi = new ArrayList<String>();
-	public List<Object> images = new ArrayList<Object>();
+	public List<ArrayList<String>> images = new ArrayList<ArrayList<String>>();
 	public List<Object> sim = new ArrayList<Object>();
 	public String source;
 }

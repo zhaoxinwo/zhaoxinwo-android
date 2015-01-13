@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -105,6 +106,26 @@ public class ResultActivity extends Activity {
 								if (v == image) {
 									Toast.makeText(getApplicationContext(),
 											"image", Toast.LENGTH_SHORT).show();
+									Intent intent = new Intent(
+											ResultActivity.this,
+											ImageActivity.class);
+
+									ArrayList<String> imageUrls = new ArrayList<String>();
+									ArrayList<String> imageTitles = new ArrayList<String>();
+									for (ArrayList<String> list : result.result
+											.get(index).images) {
+										imageUrls.add(list.get(0));
+										imageTitles.add(list.get(1));
+									}
+									if (!imageUrls.isEmpty()) {
+										intent.putExtra("urls", imageUrls);
+										intent.putExtra("titles", imageTitles);
+										startActivity(intent);
+									} else {
+										Toast.makeText(getApplicationContext(),
+												"Empty image",
+												Toast.LENGTH_SHORT).show();
+									}
 								}
 								if (v == favorate) {
 									Toast.makeText(getApplicationContext(),
