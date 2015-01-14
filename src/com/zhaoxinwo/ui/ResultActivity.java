@@ -10,8 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.text.Html;
+import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -192,6 +192,31 @@ public class ResultActivity extends Activity {
 									.setText(((ArrayList<String>) data)
 											.toString().replaceAll("[\\[\\]]",
 													""));
+							return true;
+
+						}
+						if (view.getId() == R.id.text) {
+							final String text = (String) data;
+							TextView textview = (TextView) view;
+							textview.setText(text);
+							textview.setMaxLines(5);
+							textview.setEllipsize(TruncateAt.END);
+							textview.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									TextView textview = (TextView) v;
+									textview.setText(text);
+									if (textview.getEllipsize() != null) {
+										textview.setEllipsize(null);
+										textview.setMaxLines(100);
+									} else {
+										textview.setEllipsize(TruncateAt.END);
+										textview.setMaxLines(5);
+									}
+
+								}
+							});
+
 							return true;
 
 						}
