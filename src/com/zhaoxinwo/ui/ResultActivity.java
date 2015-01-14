@@ -12,10 +12,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils.TruncateAt;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -29,6 +31,40 @@ import com.zhaoxinwo.model.House;
 import com.zhaoxinwo.model.Result;
 
 public class ResultActivity extends Activity {
+	private String keywords = null;
+	private int pageNum = 1;
+	private Result result = null;
+	private SimpleAdapter listItemAdapter = null;
+	private Handler resultHandler = null;
+
+	private void pullData() {
+		// Get result
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ZApi api = new ZApi();
+				Result result = api.search(keywords, pageNum);
+				ArrayList<Bitmap> avatars = new ArrayList<Bitmap>();
+
+				for (House house : result.result) {
+
+					System.out.println(house.author.avatar);
+					Bitmap avatar = api.doGetImage(house.author.avatar);
+					avatars.add(avatar);
+					System.out.println(avatar);
+				}
+
+				ArrayList<Object> list = new ArrayList<Object>();
+				list.add(result);
+				list.add(avatars);
+
+				Message message = Message.obtain();
+				message.obj = list;
+				resultHandler.sendMessage(message);
+				pageNum++;
+			}
+		}).start();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +74,21 @@ public class ResultActivity extends Activity {
 		setContentView(R.layout.activity_result);
 
 		// Get keywords from HomeActivity
-		final String keywords = getIntent().getStringExtra("keywords");
+		keywords = getIntent().getStringExtra("keywords");
 
 		// Set title
 		((TextView) findViewById(R.id.text_title)).setText("搜索: " + keywords);
 		Toast.makeText(getApplicationContext(), keywords, Toast.LENGTH_SHORT)
 				.show();
 
-		final Handler resultHandler = new Handler() {
+		resultHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
 				super.handleMessage(message);
 
 				ListView listview = (ListView) findViewById(R.id.listview_result);
 				ArrayList<Object> list = (ArrayList<Object>) message.obj;
-				final Result result = (Result) list.get(0);
+				result = (Result) list.get(0);
 				ArrayList<Bitmap> avatars = (ArrayList<Bitmap>) list.get(1);
 				ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 
@@ -72,14 +108,14 @@ public class ResultActivity extends Activity {
 					map.put("url", result.result.get(i).url);
 					listItem.add(map);
 				}
-				SimpleAdapter listItemAdapter = new SimpleAdapter(
-						ResultActivity.this, listItem, R.layout.listview_item,
-						new String[] { "sim", "title", "name", "pub_time",
-								"avatar", "text", "ditie", "dizhi", "jushi",
-								"zujin", "shouji" }, new int[] { R.id.sim,
-								R.id.title, R.id.name, R.id.pub_time,
-								R.id.avatar, R.id.text, R.id.ditie, R.id.dizhi,
-								R.id.jushi, R.id.zujin, R.id.shouji }) {
+				listItemAdapter = new SimpleAdapter(ResultActivity.this,
+						listItem, R.layout.listview_item, new String[] { "sim",
+								"title", "name", "pub_time", "avatar", "text",
+								"ditie", "dizhi", "jushi", "zujin", "shouji" },
+						new int[] { R.id.sim, R.id.title, R.id.name,
+								R.id.pub_time, R.id.avatar, R.id.text,
+								R.id.ditie, R.id.dizhi, R.id.jushi, R.id.zujin,
+								R.id.shouji }) {
 
 					@Override
 					public View getView(int position, View convertView,
@@ -225,34 +261,25 @@ public class ResultActivity extends Activity {
 					}
 
 				});
+
+				// Load more data
+				TextView text_more = new TextView(ResultActivity.this);
+				text_more.setGravity(Gravity.CENTER_HORIZONTAL);
+				text_more.setPadding(0, 0, 0, 24);
+				text_more.setBackgroundColor(getResources().getColor(
+						R.color.WhiteSmoke));
+				text_more.setText("点击加载更多");
+				text_more.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//TODO
+						//pullData();
+					}
+				});
+				listview.addFooterView(text_more);
 				listview.setAdapter(listItemAdapter);
 			}
 		};
-
-		// Get result
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ZApi api = new ZApi();
-				Result result = api.search(keywords);
-				ArrayList<Bitmap> avatars = new ArrayList<Bitmap>();
-
-				for (House house : result.result) {
-
-					System.out.println(house.author.avatar);
-					Bitmap avatar = api.doGetImage(house.author.avatar);
-					avatars.add(avatar);
-					System.out.println(avatar);
-				}
-
-				ArrayList<Object> list = new ArrayList<Object>();
-				list.add(result);
-				list.add(avatars);
-
-				Message message = Message.obtain();
-				message.obj = list;
-				resultHandler.sendMessage(message);
-			}
-		}).start();
+		pullData();
 	}
 }
