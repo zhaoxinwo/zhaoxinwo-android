@@ -227,8 +227,6 @@ public class ResultActivity extends Activity {
 							startActivity(browserIntent);
 						}
 						if (v == image) {
-							Toast.makeText(getApplicationContext(), "image",
-									Toast.LENGTH_SHORT).show();
 							Intent intent = new Intent(ResultActivity.this,
 									ImageActivity.class);
 
@@ -250,8 +248,14 @@ public class ResultActivity extends Activity {
 							}
 						}
 						if (v == favorate) {
-							Toast.makeText(getApplicationContext(), "favorate",
-									Toast.LENGTH_SHORT).show();
+							Intent intent = new Intent(Intent.ACTION_SEND);
+							intent.setType("text/plain");
+							intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+							intent.putExtra(Intent.EXTRA_TEXT,
+									result.result.get(index % 5).text);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(Intent.createChooser(intent,
+									getTitle()));
 						}
 
 					}
