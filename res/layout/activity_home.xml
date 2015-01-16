@@ -32,7 +32,6 @@
             android:hint="@string/edit_search_hint"
             android:imeOptions="actionSend"
             android:inputType="text"
-            android:text="国贸"
             android:textColor="@color/Black" />
 
         <Button

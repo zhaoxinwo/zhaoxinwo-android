@@ -241,6 +241,9 @@ public class ResultActivity extends Activity {
 
 					image.setVisibility(View.GONE);
 				}
+				else{
+					image.setVisibility(View.VISIBLE);
+				}
 
 				OnClickListener listener = new OnClickListener() {
 					@Override
