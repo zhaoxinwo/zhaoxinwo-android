@@ -40,6 +40,11 @@ public class ResultActivity extends Activity {
 		@Override
 		public void handleMessage(Message message) {
 			super.handleMessage(message);
+			if (message.obj == null) {
+				Toast.makeText(getApplicationContext(), "网络不佳额",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
 
 			ArrayList<Object> list = (ArrayList<Object>) message.obj;
 			result = (Result) list.get(0);
@@ -65,6 +70,7 @@ public class ResultActivity extends Activity {
 				map.put("zujin", result.result.get(i).zujin);
 				map.put("shouji", result.result.get(i).shouji);
 				map.put("url", result.result.get(i).url);
+				map.put("image", result.result.get(i).images);
 				listItem.add(map);
 			}
 
@@ -144,29 +150,39 @@ public class ResultActivity extends Activity {
 				});
 
 				return true;
-
 			}
-
 			return false;
 		}
 
 	};
 
 	private void pullData() {
-		// Get result
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+
 				ZApi api = new ZApi();
 				Result result = api.search(keywords, pageNum);
 				ArrayList<Bitmap> avatars = new ArrayList<Bitmap>();
 
-				for (House house : result.result) {
+				if (result == null) {
+					Message message = Message.obtain();
+					message.obj = null;
+					resultHandler.sendMessage(message);
+					return;
+				}
 
-					System.out.println(house.author.avatar);
+				for (House house : result.result) {
 					Bitmap avatar = api.doGetImage(house.author.avatar);
+					if (avatar == null) {
+
+						Message message = Message.obtain();
+						message.obj = null;
+						resultHandler.sendMessage(message);
+						return;
+					}
 					avatars.add(avatar);
-					System.out.println(avatar);
 				}
 
 				ArrayList<Object> list = new ArrayList<Object>();
@@ -177,8 +193,11 @@ public class ResultActivity extends Activity {
 				message.obj = list;
 				resultHandler.sendMessage(message);
 				pageNum++;
+
 			}
+
 		}).start();
+
 	}
 
 	@Override
@@ -217,6 +236,12 @@ public class ResultActivity extends Activity {
 						.findViewById(com.zhaoxinwo.ui.R.id.favorate);
 
 				final int index = position;
+
+				if (result.result.get(index % 5).images.isEmpty()) {
+
+					image.setVisibility(View.GONE);
+				}
+
 				OnClickListener listener = new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -241,10 +266,6 @@ public class ResultActivity extends Activity {
 								intent.putExtra("urls", imageUrls);
 								intent.putExtra("titles", imageTitles);
 								startActivity(intent);
-							} else {
-								Toast.makeText(getApplicationContext(),
-										"Empty image", Toast.LENGTH_SHORT)
-										.show();
 							}
 						}
 						if (v == favorate) {
@@ -281,7 +302,6 @@ public class ResultActivity extends Activity {
 		text_more.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO
 				pullData();
 			}
 		});

@@ -10,7 +10,6 @@ import android.os.Message;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.zhaoxinwo.api.ZApi;
 
@@ -27,8 +26,6 @@ public class ImageActivity extends Activity {
 				.getStringArrayListExtra("urls");
 		final ArrayList<String> imageTitles = getIntent()
 				.getStringArrayListExtra("titles");
-		Toast.makeText(getApplicationContext(), "ImageActivity",
-				Toast.LENGTH_SHORT).show();
 
 		final Handler imageHandler = new Handler() {
 			@Override
