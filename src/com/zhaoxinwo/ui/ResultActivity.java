@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -70,8 +69,87 @@ public class ResultActivity extends Activity {
 			}
 
 			listItemAdapter.notifyDataSetChanged();
-
 		}
+	};
+
+	private ViewBinder viewbinder = new ViewBinder() {
+		@Override
+		public boolean setViewValue(View view, Object data,
+				String textRepresentation) {
+			// Filter empty list and string
+			if (data instanceof String) {
+				if (((String) data).length() == 0) {
+					view.setVisibility(View.GONE);
+					return true;
+				}
+			}
+			if (data instanceof ArrayList) {
+				if (((ArrayList) data).size() == 0) {
+					view.setVisibility(View.GONE);
+					return true;
+				}
+			}
+
+			if (view.getId() == R.id.sim) {
+				((TextView) view).setText(String.format("重复发贴%d次",
+						((ArrayList<Object>) data).size()));
+				return true;
+
+			}
+			if (view instanceof ImageView && data instanceof Bitmap) {
+				ImageView iv = (ImageView) view;
+				iv.setImageBitmap((Bitmap) data);
+				return true;
+			}
+			if (view.getId() == R.id.ditie) {
+				ArrayList<String> dities = (ArrayList<String>) data;
+				String html = "";
+				ZColor color = new ZColor();
+				for (String ditie : dities) {
+					String ditieColor = color.ditie(ditie);
+					html += String.format("<font color='%s'>%s</font> ",
+							ditieColor, ditie);
+				}
+				((TextView) view).setText(Html.fromHtml(html),
+						TextView.BufferType.SPANNABLE);
+				return true;
+
+			}
+			if (view.getId() == R.id.dizhi) {
+				((TextView) view).setText(((ArrayList<String>) data).toString()
+						.replaceAll("[\\[\\]]", ""));
+				return true;
+
+			}
+			if (view.getId() == R.id.text) {
+				final String text = (String) data;
+				TextView textview = (TextView) view;
+				textview.setText(text);
+				textview.setMaxLines(5);
+				textview.setEllipsize(TruncateAt.END);
+				textview.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						TextView textview = (TextView) v;
+						textview.setText(text);
+						if (textview.getEllipsize() != null) {
+							textview.setEllipsize(null);
+							textview.setMaxLines(100);
+						} else {
+							textview.setEllipsize(TruncateAt.END);
+							textview.setMaxLines(5);
+						}
+
+					}
+				});
+
+				return true;
+
+			}
+
+			return false;
+		}
+
 	};
 
 	private void pullData() {
@@ -145,7 +223,7 @@ public class ResultActivity extends Activity {
 						if (v == html) {
 							Intent browserIntent = new Intent(
 									Intent.ACTION_VIEW, Uri.parse(result.result
-											.get(index).url));
+											.get(index % 5).url));
 							startActivity(browserIntent);
 						}
 						if (v == image) {
@@ -157,7 +235,7 @@ public class ResultActivity extends Activity {
 							ArrayList<String> imageUrls = new ArrayList<String>();
 							ArrayList<String> imageTitles = new ArrayList<String>();
 							for (ArrayList<String> list : result.result
-									.get(index).images) {
+									.get(index % 5).images) {
 								imageUrls.add(list.get(0));
 								imageTitles.add(list.get(1));
 							}
@@ -186,85 +264,7 @@ public class ResultActivity extends Activity {
 
 		};
 
-		listItemAdapter.setViewBinder(new ViewBinder() {
-			@Override
-			public boolean setViewValue(View view, Object data,
-					String textRepresentation) {
-				// Filter empty list and string
-				if (data instanceof String) {
-					if (((String) data).length() == 0) {
-						view.setVisibility(View.GONE);
-						return true;
-					}
-				}
-				if (data instanceof ArrayList) {
-					if (((ArrayList) data).size() == 0) {
-						view.setVisibility(View.GONE);
-						return true;
-					}
-				}
-
-				if (view.getId() == R.id.sim) {
-					((TextView) view).setText(String.format("重复发贴%d次",
-							((ArrayList<Object>) data).size()));
-					return true;
-
-				}
-				if (view instanceof ImageView && data instanceof Bitmap) {
-					ImageView iv = (ImageView) view;
-					iv.setImageBitmap((Bitmap) data);
-					return true;
-				}
-				if (view.getId() == R.id.ditie) {
-					ArrayList<String> dities = (ArrayList<String>) data;
-					String html = "";
-					ZColor color = new ZColor();
-					for (String ditie : dities) {
-						String ditieColor = color.ditie(ditie);
-						html += String.format("<font color='%s'>%s</font> ",
-								ditieColor, ditie);
-					}
-					((TextView) view).setText(Html.fromHtml(html),
-							TextView.BufferType.SPANNABLE);
-					return true;
-
-				}
-				if (view.getId() == R.id.dizhi) {
-					((TextView) view).setText(((ArrayList<String>) data)
-							.toString().replaceAll("[\\[\\]]", ""));
-					return true;
-
-				}
-				if (view.getId() == R.id.text) {
-					final String text = (String) data;
-					TextView textview = (TextView) view;
-					textview.setText(text);
-					textview.setMaxLines(5);
-					textview.setEllipsize(TruncateAt.END);
-					textview.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							TextView textview = (TextView) v;
-							textview.setText(text);
-							if (textview.getEllipsize() != null) {
-								textview.setEllipsize(null);
-								textview.setMaxLines(100);
-							} else {
-								textview.setEllipsize(TruncateAt.END);
-								textview.setMaxLines(5);
-							}
-
-						}
-					});
-
-					return true;
-
-				}
-
-				return false;
-			}
-
-		});
+		listItemAdapter.setViewBinder(viewbinder);
 		pullData();
 
 		// Load more data
