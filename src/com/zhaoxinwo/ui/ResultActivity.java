@@ -34,7 +34,7 @@ import com.zhaoxinwo.model.Result;
 public class ResultActivity extends Activity {
 	private String keywords = null;
 	private int pageNum = 1;
-	private Result result = null;
+	private ArrayList<House> houses = new ArrayList<House>();
 	private SimpleAdapter listItemAdapter = null;
 	private ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 	private ListView listview = null;
@@ -49,30 +49,32 @@ public class ResultActivity extends Activity {
 			}
 
 			ArrayList<Object> list = (ArrayList<Object>) message.obj;
-			result = (Result) list.get(0);
-			if (result.result.isEmpty()) {
+			ArrayList<House> result = (ArrayList) ((Result) list.get(0)).result;
+			if (result.isEmpty()) {
 				// Set title
 				Toast.makeText(getApplicationContext(), "没有更多啦",
 						Toast.LENGTH_SHORT).show();
+				return;
 
 			}
-			ArrayList<Bitmap> avatars = (ArrayList<Bitmap>) list.get(1);
 
-			for (int i = 0; i < result.result.size(); i++) {
+			ArrayList<Bitmap> avatars = (ArrayList<Bitmap>) list.get(1);
+			houses.addAll(result);
+			for (int i = 0; i < result.size(); i++) {
 				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put("sim", result.result.get(i).sim);
-				map.put("title", result.result.get(i).title);
-				map.put("name", result.result.get(i).author.name);
-				map.put("pub_time", result.result.get(i).pub_time);
+				map.put("sim", result.get(i).sim);
+				map.put("title", result.get(i).title);
+				map.put("name", result.get(i).author.name);
+				map.put("pub_time", result.get(i).pub_time);
 				map.put("avatar", avatars.get(i));
-				map.put("text", result.result.get(i).text);
-				map.put("ditie", result.result.get(i).ditie);
-				map.put("dizhi", result.result.get(i).dizhi);
-				map.put("jushi", result.result.get(i).jushi);
-				map.put("zujin", result.result.get(i).zujin);
-				map.put("shouji", result.result.get(i).shouji);
-				map.put("url", result.result.get(i).url);
-				map.put("image", result.result.get(i).images);
+				map.put("text", result.get(i).text);
+				map.put("ditie", result.get(i).ditie);
+				map.put("dizhi", result.get(i).dizhi);
+				map.put("jushi", result.get(i).jushi);
+				map.put("zujin", result.get(i).zujin);
+				map.put("shouji", result.get(i).shouji);
+				map.put("url", result.get(i).url);
+				map.put("image", result.get(i).images);
 				listItem.add(map);
 			}
 
@@ -259,8 +261,7 @@ public class ResultActivity extends Activity {
 
 				final int index = position;
 
-				if (result.result.get(index % 5).images.isEmpty()) {
-
+				if (houses.get(index).images.isEmpty()) {
 					image.setVisibility(View.GONE);
 				} else {
 					image.setVisibility(View.VISIBLE);
@@ -271,8 +272,8 @@ public class ResultActivity extends Activity {
 					public void onClick(View v) {
 						if (v == html) {
 							Intent browserIntent = new Intent(
-									Intent.ACTION_VIEW, Uri.parse(result.result
-											.get(index % 5).url));
+									Intent.ACTION_VIEW, Uri.parse(houses
+											.get(index).url));
 							startActivity(browserIntent);
 						}
 						if (v == image) {
@@ -281,8 +282,7 @@ public class ResultActivity extends Activity {
 
 							ArrayList<String> imageUrls = new ArrayList<String>();
 							ArrayList<String> imageTitles = new ArrayList<String>();
-							for (ArrayList<String> list : result.result
-									.get(index % 5).images) {
+							for (ArrayList<String> list : houses.get(index).images) {
 								imageUrls.add(list.get(0));
 								imageTitles.add(list.get(1));
 							}
@@ -300,10 +300,8 @@ public class ResultActivity extends Activity {
 									Intent.EXTRA_TEXT,
 									new Formatter()
 											.format("来源: %s\n收藏自找新窝(zhaoxinwo.com)\n\n%s",
-													result.result
-															.get(index % 5).url,
-													result.result
-															.get(index % 5).text)
+													houses.get(index).url,
+													houses.get(index).text)
 											.toString());
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							startActivity(Intent.createChooser(intent,
