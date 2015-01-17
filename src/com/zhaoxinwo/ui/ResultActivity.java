@@ -7,6 +7,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -88,12 +89,16 @@ public class ResultActivity extends Activity {
 				if (((String) data).length() == 0) {
 					view.setVisibility(View.GONE);
 					return true;
+				} else {
+					view.setVisibility(View.VISIBLE);
 				}
 			}
 			if (data instanceof ArrayList) {
 				if (((ArrayList) data).size() == 0) {
 					view.setVisibility(View.GONE);
 					return true;
+				} else {
+					view.setVisibility(View.VISIBLE);
 				}
 			}
 
@@ -150,6 +155,22 @@ public class ResultActivity extends Activity {
 					}
 				});
 
+				return true;
+			}
+			if (view.getId() == R.id.shouji) {
+				((TextView) view).setText((String) data);
+				((TextView) view).getPaint()
+						.setFlags(Paint.UNDERLINE_TEXT_FLAG);
+				final String phoneNum = ((String) data).split(",")[0];
+				view.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(Intent.ACTION_DIAL, Uri
+								.parse("tel:" + phoneNum));
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						ResultActivity.this.startActivity(intent);
+					}
+				});
 				return true;
 			}
 			return false;
@@ -275,10 +296,15 @@ public class ResultActivity extends Activity {
 							Intent intent = new Intent(Intent.ACTION_SEND);
 							intent.setType("text/plain");
 							intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-							intent.putExtra(Intent.EXTRA_TEXT, new Formatter()
-									.format("来源: %s\n收藏自找新窝(zhaoxinwo.com)\n\n%s",
-											result.result.get(index % 5).url,
-											result.result.get(index % 5).text).toString());
+							intent.putExtra(
+									Intent.EXTRA_TEXT,
+									new Formatter()
+											.format("来源: %s\n收藏自找新窝(zhaoxinwo.com)\n\n%s",
+													result.result
+															.get(index % 5).url,
+													result.result
+															.get(index % 5).text)
+											.toString());
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							startActivity(Intent.createChooser(intent,
 									getTitle()));
