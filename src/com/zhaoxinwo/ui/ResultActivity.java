@@ -1,6 +1,7 @@
 package com.zhaoxinwo.ui;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -240,8 +241,7 @@ public class ResultActivity extends Activity {
 				if (result.result.get(index % 5).images.isEmpty()) {
 
 					image.setVisibility(View.GONE);
-				}
-				else{
+				} else {
 					image.setVisibility(View.VISIBLE);
 				}
 
@@ -275,8 +275,10 @@ public class ResultActivity extends Activity {
 							Intent intent = new Intent(Intent.ACTION_SEND);
 							intent.setType("text/plain");
 							intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-							intent.putExtra(Intent.EXTRA_TEXT,
-									result.result.get(index % 5).text);
+							intent.putExtra(Intent.EXTRA_TEXT, new Formatter()
+									.format("来源: %s\n收藏自找新窝(zhaoxinwo.com)\n\n%s",
+											result.result.get(index % 5).url,
+											result.result.get(index % 5).text).toString());
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							startActivity(Intent.createChooser(intent,
 									getTitle()));
