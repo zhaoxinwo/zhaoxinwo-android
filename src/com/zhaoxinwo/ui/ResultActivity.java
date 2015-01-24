@@ -14,11 +14,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils.TruncateAt;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -30,19 +33,23 @@ import com.zhaoxinwo.api.ZApi;
 import com.zhaoxinwo.api.ZColor;
 import com.zhaoxinwo.model.House;
 import com.zhaoxinwo.model.Result;
+import com.zhaoxinwo.utils.SwipeBackActivity;
 
-public class ResultActivity extends Activity {
+public class ResultActivity extends SwipeBackActivity {
+	protected static final String TAG = "ResultActivity";
 	private String keywords = null;
 	private int pageNum = 1;
 	private ArrayList<House> houses = new ArrayList<House>();
 	private SimpleAdapter listItemAdapter = null;
 	private ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 	private ListView listview = null;
+	private TextView text_more;
 	private Handler resultHandler = new Handler() {
 		@Override
 		public void handleMessage(Message message) {
 			super.handleMessage(message);
 			if (message.obj == null) {
+				ResultActivity.this.text_more.setText("网络不佳额");
 				Toast.makeText(getApplicationContext(), "网络不佳额",
 						Toast.LENGTH_SHORT).show();
 				return;
@@ -52,6 +59,7 @@ public class ResultActivity extends Activity {
 			ArrayList<House> result = (ArrayList) ((Result) list.get(0)).result;
 			if (result.isEmpty()) {
 				// Set title
+				ResultActivity.this.text_more.setText("没有更多啦");
 				Toast.makeText(getApplicationContext(), "没有更多啦",
 						Toast.LENGTH_SHORT).show();
 				return;
@@ -77,7 +85,7 @@ public class ResultActivity extends Activity {
 				map.put("image", result.get(i).images);
 				listItem.add(map);
 			}
-
+			ResultActivity.this.text_more.setText("加载完成");
 			listItemAdapter.notifyDataSetChanged();
 		}
 	};
@@ -228,16 +236,15 @@ public class ResultActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Hide title
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_result);
 
 		// Get keywords from HomeActivity
 		keywords = getIntent().getStringExtra("keywords");
 
 		// Set title
-		((TextView) findViewById(R.id.text_title)).setText("搜索: " + keywords);
-		Toast.makeText(getApplicationContext(), keywords, Toast.LENGTH_SHORT)
-				.show();
+		((TextView) findViewById(R.id.text_title)).setText("当前搜索: " + keywords);
+//		Toast.makeText(getApplicationContext(), keywords, Toast.LENGTH_SHORT).show();
 
 		listview = (ListView) findViewById(R.id.listview_result);
 
@@ -322,11 +329,13 @@ public class ResultActivity extends Activity {
 		pullData();
 
 		// Load more data
-		TextView text_more = new TextView(ResultActivity.this);
+		text_more = new TextView(ResultActivity.this);
 		text_more.setGravity(Gravity.CENTER_HORIZONTAL);
 		text_more.setPadding(0, 0, 0, 24);
 		text_more.setBackgroundColor(getResources()
 				.getColor(R.color.WhiteSmoke));
+		text_more.setText("加载中...");
+		/*
 		text_more.setText("点击加载更多");
 		text_more.setOnClickListener(new OnClickListener() {
 			@Override
@@ -334,7 +343,29 @@ public class ResultActivity extends Activity {
 				pullData();
 			}
 		});
+		*/
+		
 		listview.addFooterView(text_more);
 		listview.setAdapter(listItemAdapter);
+		listview.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){	//滚动停止
+					if(view.getLastVisiblePosition() == view.getCount()-1){
+						Log.v(TAG, "now at the bottom of listview, auto load more");
+						pullData();
+					}
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }
