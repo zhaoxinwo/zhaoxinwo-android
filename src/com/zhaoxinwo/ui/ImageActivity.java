@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.zhaoxinwo.api.ZApi;
+import com.zhaoxinwo.utils.SwipeBackActivity;
 
-public class ImageActivity extends Activity {
+public class ImageActivity extends SwipeBackActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Hide title
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_image);
 
 		// Get image uris from ResultActivity
