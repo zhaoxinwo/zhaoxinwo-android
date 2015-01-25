@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/edit_search_hint"
-            android:imeOptions="actionSend"
+            android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="@color/Black" />
 

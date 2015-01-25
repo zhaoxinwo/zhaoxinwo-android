@@ -85,7 +85,7 @@ public class ResultActivity extends SwipeBackActivity {
 				map.put("image", result.get(i).images);
 				listItem.add(map);
 			}
-			ResultActivity.this.text_more.setText("加载完成");
+			ResultActivity.this.text_more.setText("上拉加载更多");
 			listItemAdapter.notifyDataSetChanged();
 		}
 	};
