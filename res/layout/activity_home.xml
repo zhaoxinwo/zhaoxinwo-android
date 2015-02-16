@@ -25,7 +25,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/logo" />
 
-        <EditText
+        <com.zhaoxinwo.utils.EditTextWithDelete
             android:id="@+id/textKeywords"
             android:text=""
             android:layout_width="match_parent"
@@ -34,7 +34,8 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="@color/Black" />
-
+        
+		
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="match_parent"
