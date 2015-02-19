@@ -27,15 +27,14 @@
 
         <com.zhaoxinwo.utils.EditTextWithDelete
             android:id="@+id/textKeywords"
-            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/edit_search_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"
+            android:text=""
             android:textColor="@color/Black" />
-        
-		
+
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="match_parent"
@@ -68,6 +67,30 @@
             android:layout_gravity="center"
             android:layout_marginTop="4dp"
             android:text="@string/text_site"
+            android:textColor="@color/Gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="28dp"
+            android:text="@string/text_share"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/textDonate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:text="@string/text_donate"
             android:textColor="@color/Gray" />
     </LinearLayout>
 

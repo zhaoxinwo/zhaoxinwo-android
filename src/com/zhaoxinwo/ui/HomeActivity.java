@@ -99,7 +99,20 @@ public class HomeActivity extends Activity {
 						onTextUpdateClick(v);
 					}
 				});
-
+		((TextView) findViewById(R.id.textShare))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						onTextShareClick(v);
+					}
+				});
+		((TextView) findViewById(R.id.textDonate))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						onTextDonateClick(v);
+					}
+				});
 		// EditText submit event
 		((EditText) findViewById(R.id.textKeywords))
 				.setOnKeyListener(new OnKeyListener() {
@@ -148,5 +161,21 @@ public class HomeActivity extends Activity {
 				updateHandler.sendMessage(message);
 			}
 		}).start();
+	}
+
+	public void onTextShareClick(View v) {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+		intent.putExtra(Intent.EXTRA_TEXT,
+
+		"#找新窝# 基于豆瓣租房小组数据的搜房App，用豆瓣找房子的亲可以试试哦！ http://zhaoxinwo.com");
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(Intent.createChooser(intent, getTitle()));
+	}
+
+	public void onTextDonateClick(View v) {
+		Intent intent = new Intent(HomeActivity.this, DonateActivity.class);
+		startActivity(intent);
 	}
 }
