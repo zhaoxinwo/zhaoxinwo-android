@@ -3,6 +3,8 @@ package com.zhaoxinwo.ui;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -24,6 +26,20 @@ import android.widget.Toast;
 import com.zhaoxinwo.api.ZApi;
 
 public class HomeActivity extends Activity {
+	private boolean autoUpdate = false;
+
+	protected void showUpdateDialog(Intent intent) {
+		final Intent browserIntent = intent;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("更新");
+		builder.setMessage("程序员熬夜发布新版本哦！");
+		builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				startActivity(browserIntent);
+			}
+		}).setNegativeButton("取消", null).show();
+	}
+
 	private Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message message) {
@@ -34,7 +50,7 @@ public class HomeActivity extends Activity {
 				return;
 			}
 
-			HashMap<String, String> map = (HashMap)message.obj;
+			HashMap<String, String> map = (HashMap) message.obj;
 
 			String version = map.get("version");
 			String uri = map.get("uri");
@@ -50,8 +66,8 @@ public class HomeActivity extends Activity {
 
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW,
 							Uri.parse(uri));
-					startActivity(browserIntent);
-				} else {
+					HomeActivity.this.showUpdateDialog(browserIntent);
+				} else if (!HomeActivity.this.autoUpdate) {
 					Toast.makeText(getApplicationContext(), "已经是最新版本",
 							Toast.LENGTH_SHORT).show();
 				}
@@ -99,6 +115,9 @@ public class HomeActivity extends Activity {
 
 					}
 				});
+
+		// Update
+		this.onTextUpdateClick(null);
 	}
 
 	public void onButtonSearchClick(View v) {
@@ -116,6 +135,8 @@ public class HomeActivity extends Activity {
 	}
 
 	public void onTextUpdateClick(View v) {
+		this.autoUpdate = v == null ? true : false;
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
