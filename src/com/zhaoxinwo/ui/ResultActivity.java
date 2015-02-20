@@ -355,6 +355,7 @@ public class ResultActivity extends SwipeBackActivity {
 				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){	//滚动停止
 					if(view.getLastVisiblePosition() == view.getCount()-1){
 						Log.v(TAG, "now at the bottom of listview, auto load more");
+						ResultActivity.this.text_more.setText("加载中...");
 						pullData();
 					}
 				}
