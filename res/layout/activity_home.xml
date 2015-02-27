@@ -53,20 +53,21 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textUpdate"
+            android:id="@+id/textSite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="48dp"
-            android:text="@string/text_update"
+            android:text="@string/text_site"
             android:textColor="@color/text_text" />
-
+        
         <TextView
+            android:id="@+id/textUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="4dp"
-            android:text="@string/text_site"
+            android:text="@string/text_update"
             android:textColor="@color/Gray" />
     </LinearLayout>
 
@@ -83,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="28dp"
             android:text="@string/text_share"
-            android:textColor="@color/Gray" />
+            android:textColor="@color/text_text" />
 
         <TextView
             android:id="@+id/textDonate"
@@ -91,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="28dp"
             android:text="@string/text_donate"
-            android:textColor="@color/Gray" />
+            android:textColor="@color/text_text" />
     </LinearLayout>
 
 </LinearLayout>

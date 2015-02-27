@@ -39,12 +39,7 @@
             android:name=".ImageActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity
-            android:name=".DonateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+        </activity>>
     </application>
 
 </manifest>

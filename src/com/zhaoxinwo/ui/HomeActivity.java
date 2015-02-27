@@ -26,8 +26,6 @@ import android.widget.Toast;
 import com.zhaoxinwo.api.ZApi;
 
 public class HomeActivity extends Activity {
-	private boolean autoUpdate = false;
-
 	protected void showUpdateDialog(Intent intent) {
 		final Intent browserIntent = intent;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -45,8 +43,6 @@ public class HomeActivity extends Activity {
 		public void handleMessage(Message message) {
 			super.handleMessage(message);
 			if (message.obj == null) {
-				Toast.makeText(getApplicationContext(), "网络不佳额",
-						Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -67,10 +63,9 @@ public class HomeActivity extends Activity {
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW,
 							Uri.parse(uri));
 					HomeActivity.this.showUpdateDialog(browserIntent);
-				} else if (!HomeActivity.this.autoUpdate) {
-					Toast.makeText(getApplicationContext(), "已经是最新版本",
-							Toast.LENGTH_SHORT).show();
 				}
+				((TextView) findViewById(R.id.textUpdate)).setText("当前版本: "
+						+ version);
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -92,11 +87,11 @@ public class HomeActivity extends Activity {
 						onButtonSearchClick(v);
 					}
 				});
-		((TextView) findViewById(R.id.textUpdate))
+		((TextView) findViewById(R.id.textSite))
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						onTextUpdateClick(v);
+						onTextSiteClick(v);
 					}
 				});
 		((TextView) findViewById(R.id.textShare))
@@ -130,7 +125,7 @@ public class HomeActivity extends Activity {
 				});
 
 		// Update
-		this.onTextUpdateClick(null);
+		this.autoUpdate();
 	}
 
 	public void onButtonSearchClick(View v) {
@@ -147,9 +142,7 @@ public class HomeActivity extends Activity {
 		}
 	}
 
-	public void onTextUpdateClick(View v) {
-		this.autoUpdate = v == null ? true : false;
-
+	public void autoUpdate() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -161,6 +154,12 @@ public class HomeActivity extends Activity {
 				updateHandler.sendMessage(message);
 			}
 		}).start();
+	}
+
+	public void onTextSiteClick(View v) {
+		Intent intent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse("http://zhaoxinwo.com"));
+		startActivity(intent);
 	}
 
 	public void onTextShareClick(View v) {
