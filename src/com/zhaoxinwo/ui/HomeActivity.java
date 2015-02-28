@@ -108,6 +108,13 @@ public class HomeActivity extends Activity {
 						onTextDonateClick(v);
 					}
 				});
+		((TextView) findViewById(R.id.textStatistic))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						onTextStatisticClick(v);
+					}
+				});
 		// EditText submit event
 		((EditText) findViewById(R.id.textKeywords))
 				.setOnKeyListener(new OnKeyListener() {
@@ -174,9 +181,13 @@ public class HomeActivity extends Activity {
 	}
 
 	public void onTextDonateClick(View v) {
-		// Intent intent = new Intent(HomeActivity.this, DonateActivity.class);
-		Intent intent = new Intent(Intent.ACTION_VIEW,
-				Uri.parse("http://182.92.159.73/#/donate"));
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse((new ZApi())
+				.getBaseUri() + "#/donate"));
+		startActivity(intent);
+	}
+
+	public void onTextStatisticClick(View v) {
+		Intent intent = new Intent(HomeActivity.this, StatisticActivity.class);
 		startActivity(intent);
 	}
 }
