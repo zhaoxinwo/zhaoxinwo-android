@@ -27,7 +27,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zhaoxinwo.api.ZApi;
 import com.zhaoxinwo.api.ZColor;
@@ -50,8 +49,6 @@ public class ResultActivity extends SwipeBackActivity {
 			super.handleMessage(message);
 			if (message.obj == null) {
 				ResultActivity.this.text_more.setText("网络不佳额");
-				Toast.makeText(getApplicationContext(), "网络不佳额",
-						Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -60,8 +57,6 @@ public class ResultActivity extends SwipeBackActivity {
 			if (result.isEmpty()) {
 				// Set title
 				ResultActivity.this.text_more.setText("没有更多啦");
-				Toast.makeText(getApplicationContext(), "没有更多啦",
-						Toast.LENGTH_SHORT).show();
 				return;
 
 			}
@@ -236,7 +231,7 @@ public class ResultActivity extends SwipeBackActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Hide title
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_result);
 
 		// Get keywords from HomeActivity
@@ -244,7 +239,6 @@ public class ResultActivity extends SwipeBackActivity {
 
 		// Set title
 		((TextView) findViewById(R.id.text_title)).setText("当前搜索: " + keywords);
-//		Toast.makeText(getApplicationContext(), keywords, Toast.LENGTH_SHORT).show();
 
 		listview = (ListView) findViewById(R.id.listview_result);
 
@@ -336,36 +330,34 @@ public class ResultActivity extends SwipeBackActivity {
 				.getColor(R.color.WhiteSmoke));
 		text_more.setText("加载中...");
 		/*
-		text_more.setText("点击加载更多");
-		text_more.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				pullData();
-			}
-		});
-		*/
-		
+		 * text_more.setText("点击加载更多"); text_more.setOnClickListener(new
+		 * OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { pullData(); } });
+		 */
+
 		listview.addFooterView(text_more);
 		listview.setAdapter(listItemAdapter);
 		listview.setOnScrollListener(new OnScrollListener() {
-			
+
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				// TODO Auto-generated method stub
-				if(scrollState == OnScrollListener.SCROLL_STATE_IDLE){	//滚动停止
-					if(view.getLastVisiblePosition() == view.getCount()-1){
-						Log.v(TAG, "now at the bottom of listview, auto load more");
+				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) { // 滚动停止
+					if (view.getLastVisiblePosition() == view.getCount() - 1) {
+						Log.v(TAG,
+								"now at the bottom of listview, auto load more");
 						ResultActivity.this.text_more.setText("加载中...");
 						pullData();
 					}
 				}
 			}
-			
+
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
