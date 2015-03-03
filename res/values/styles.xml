@@ -16,4 +16,13 @@
     <style name="AppTheme" parent="">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+     <!--look at this: https://github.com/amlcurran/ShowcaseView/issues/159-->
+	 <!--you can customize it-->
+	 <style name="Custom_semi_transparent_demo" parent="ShowcaseView.Light">
+	     <item name="sv_backgroundColor">#663d4353</item>
+	     <item name="sv_showcaseColor">#25467A</item>
+	     <item name="sv_buttonText">Close</item>
+	 </style>
+ 
 </resources>
