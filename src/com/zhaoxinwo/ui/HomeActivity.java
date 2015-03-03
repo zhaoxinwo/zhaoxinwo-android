@@ -1,6 +1,8 @@
 package com.zhaoxinwo.ui;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -148,6 +150,36 @@ public class HomeActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 		}
 	}
+
+	private static Boolean isExit = false;  
+    private static Boolean hasTask = false;  
+    Timer tExit = new Timer();  
+    TimerTask task = new TimerTask() {  
+        @Override  
+        public void run() {  
+            isExit = false;  
+            hasTask = true;  
+        }  
+    };  
+  
+  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        // TODO Auto-generated method stub  
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+                if(isExit == false ) {  
+                    isExit = true;  
+                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();  
+                    if(!hasTask) {  
+                        tExit.schedule(task, 2000);  
+                    }
+                }
+                else {
+	                finish();  
+	                System.exit(0);
+                }
+        }
+        return false;  
+    }
 
 	public void autoUpdate() {
 		new Thread(new Runnable() {
