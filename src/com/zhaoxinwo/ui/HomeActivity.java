@@ -20,13 +20,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.Window;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
 import com.zhaoxinwo.api.ZApi;
 
 public class HomeActivity extends Activity {
@@ -80,13 +79,12 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// Hide title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_home);
-
-		register();
-
+		
+		MobclickAgent.updateOnlineConfig(getApplicationContext());
+		
 		((Button) findViewById(R.id.buttonSearch))
 				.setOnClickListener(new OnClickListener() {
 					@Override
@@ -156,42 +154,35 @@ public class HomeActivity extends Activity {
 		}
 	}
 
-	private void register() {
-		final WebView webView = (WebView) findViewById(R.id.webView);
-		webView.loadUrl((new ZApi()).getBaseUri() + "?from_app");
-		WebSettings webSettings = webView.getSettings();
-		webSettings.setJavaScriptEnabled(true);
-
-	}
-
-	private static Boolean isExit = false;
-	private static Boolean hasTask = false;
-	Timer tExit = new Timer();
-	TimerTask task = new TimerTask() {
-		@Override
-		public void run() {
-			isExit = false;
-			hasTask = true;
-		}
-	};
-
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (isExit == false) {
-				isExit = true;
-				Toast.makeText(HomeActivity.this, "再按一次退出程序",
-						Toast.LENGTH_SHORT).show();
-				if (!hasTask) {
-					tExit.schedule(task, 2000);
-				}
-			} else {
-				finish();
-				System.exit(0);
-			}
-		}
-		return false;
-	}
+	private static Boolean isExit = false;  
+    private static Boolean hasTask = false;  
+    Timer tExit = new Timer();  
+    TimerTask task = new TimerTask() {  
+        @Override  
+        public void run() {  
+            isExit = false;  
+            hasTask = true;  
+        }  
+    };  
+  
+  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        // TODO Auto-generated method stub  
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+                if(isExit == false ) {  
+                    isExit = true;  
+                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();  
+                    if(!hasTask) {  
+                        tExit.schedule(task, 2000);  
+                    }
+                }
+                else {
+	                finish();  
+	                System.exit(0);
+                }
+        }
+        return false;  
+    }
 
 	public void autoUpdate() {
 		new Thread(new Runnable() {
@@ -233,5 +224,19 @@ public class HomeActivity extends Activity {
 	public void onTextStatisticClick(View v) {
 		Intent intent = new Intent(HomeActivity.this, StatisticActivity.class);
 		startActivity(intent);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 }

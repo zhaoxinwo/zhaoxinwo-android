@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.umeng.analytics.MobclickAgent;
 import com.zhaoxinwo.api.ZApi;
 import com.zhaoxinwo.api.ZColor;
 import com.zhaoxinwo.model.House;
@@ -66,7 +67,6 @@ public class ResultActivity extends SwipeBackActivity {
 				Toast.makeText(getApplicationContext(), "没有更多啦",
 						Toast.LENGTH_SHORT).show();
 				return;
-
 			}
 
 			ArrayList<Bitmap> avatars = (ArrayList<Bitmap>) list.get(1);
@@ -119,7 +119,6 @@ public class ResultActivity extends SwipeBackActivity {
 				((TextView) view).setText(String.format("重复发贴%d次",
 						((ArrayList<Object>) data).size()));
 				return true;
-
 			}
 			if (view instanceof ImageView && data instanceof Bitmap) {
 				ImageView iv = (ImageView) view;
@@ -164,7 +163,6 @@ public class ResultActivity extends SwipeBackActivity {
 							textview.setEllipsize(TruncateAt.END);
 							textview.setMaxLines(5);
 						}
-
 					}
 				});
 
@@ -211,7 +209,6 @@ public class ResultActivity extends SwipeBackActivity {
 				for (House house : result.result) {
 					Bitmap avatar = api.doGetImage(house.author.avatar);
 					if (avatar == null) {
-
 						Message message = Message.obtain();
 						message.obj = null;
 						resultHandler.sendMessage(message);
@@ -228,7 +225,6 @@ public class ResultActivity extends SwipeBackActivity {
 				message.obj = list;
 				resultHandler.sendMessage(message);
 				pageNum++;
-
 			}
 
 		}).start();
@@ -247,7 +243,6 @@ public class ResultActivity extends SwipeBackActivity {
 
 		// Set title
 		((TextView) findViewById(R.id.text_title)).setText("当前搜索: " + keywords);
-//		Toast.makeText(getApplicationContext(), keywords, Toast.LENGTH_SHORT).show();
 
 		listview = (ListView) findViewById(R.id.listview_result);
 
@@ -338,15 +333,6 @@ public class ResultActivity extends SwipeBackActivity {
 		text_more.setBackgroundColor(getResources()
 				.getColor(R.color.WhiteSmoke));
 		text_more.setText("加载中...");
-		/*
-		text_more.setText("点击加载更多");
-		text_more.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				pullData();
-			}
-		});
-		*/
 		
 		listview.addFooterView(text_more);
 		listview.setAdapter(listItemAdapter);
@@ -386,5 +372,19 @@ public class ResultActivity extends SwipeBackActivity {
 			sharedataEditor.putBoolean("isSoupon", false); 
 			sharedataEditor.commit();
         }
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 }
