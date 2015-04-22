@@ -347,11 +347,11 @@ public class ResultActivity extends SwipeBackActivity {
 			}
 		});
 		*/
-		
+
 		listview.addFooterView(text_more);
 		listview.setAdapter(listItemAdapter);
 		listview.setOnScrollListener(new OnScrollListener() {
-			
+
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				// TODO Auto-generated method stub
@@ -363,18 +363,18 @@ public class ResultActivity extends SwipeBackActivity {
 					}
 				}
 			}
-			
+
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
-		SharedPreferences sharedata = getSharedPreferences("first_run", 0); 
-        Boolean isSoupon = sharedata.getBoolean("isSoupon", true); 
-        if (isSoupon) { 
+
+		SharedPreferences sharedata = getSharedPreferences("first_run", 0);
+        Boolean isSoupon = sharedata.getBoolean("isSoupon", true);
+        if (isSoupon) {
 			ShowcaseView showcaseView = new ShowcaseView.Builder(this)
 	        .setStyle(R.style.Custom_semi_transparent_demo)//setStyle instead of setTarget!
 	        .hideOnTouchOutside()
@@ -382,9 +382,24 @@ public class ResultActivity extends SwipeBackActivity {
 	//		showcaseView.setBackground(getResources().getDrawable(R.drawable.swipe_back_en));//minAPI=16
 			showcaseView.setBackgroundDrawable(getResources().getDrawable(R.drawable.swipe_back_en));//deprecated.
 			//更新flag，第二次打开时不再显示
-			Editor sharedataEditor = getSharedPreferences("first_run", 0).edit(); 
-			sharedataEditor.putBoolean("isSoupon", false); 
+			Editor sharedataEditor = getSharedPreferences("first_run", 0).edit();
+			sharedataEditor.putBoolean("isSoupon", false);
 			sharedataEditor.commit();
         }
 	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
 }

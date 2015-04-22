@@ -84,7 +84,7 @@ public class HomeActivity extends Activity {
 		// Hide title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_home);
-
+		MobclickAgent.updateOnlineConfig(getApplicationContext());
 		register();
 
 		((Button) findViewById(R.id.buttonSearch))
@@ -140,6 +140,20 @@ public class HomeActivity extends Activity {
 
 		// Update
 		this.autoUpdate();
+	}
+
+		@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	public void onButtonSearchClick(View v) {

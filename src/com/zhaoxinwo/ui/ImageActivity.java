@@ -67,21 +67,34 @@ public class ImageActivity extends SwipeBackActivity {
 				imageHandler.sendMessage(message);
 			}
 		}).start();
-		
-		SharedPreferences sharedata = getSharedPreferences("first_image_show", 0); 
-        Boolean isSoupon = sharedata.getBoolean("isFirst", true); 
-        if (isSoupon) { 
+
+		SharedPreferences sharedata = getSharedPreferences("first_image_show", 0);
+        Boolean isSoupon = sharedata.getBoolean("isFirst", true);
+        if (isSoupon) {
 			ShowcaseView showcaseView = new ShowcaseView.Builder(this)
 	        .setStyle(R.style.Custom_semi_transparent_demo)//setStyle instead of setTarget!
 	        .hideOnTouchOutside()
 	        .build();
 	//		showcaseView.setBackground(getResources().getDrawable(R.drawable.swipe_back_en));//minAPI=16
 			showcaseView.setBackgroundDrawable(getResources().getDrawable(R.drawable.swipe_back_en));//deprecated.
-			
+
 			//更新flag，第二次打开时不再显示
-			Editor sharedataEditor = getSharedPreferences("first_image_show", 0).edit(); 
-			sharedataEditor.putBoolean("isFirst", false); 
+			Editor sharedataEditor = getSharedPreferences("first_image_show", 0).edit();
+			sharedataEditor.putBoolean("isFirst", false);
 			sharedataEditor.commit();
         }
+	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 }
